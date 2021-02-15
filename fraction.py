@@ -40,10 +40,15 @@ class Fraction:
     def __add__(self, other) -> "Fraction":
         nok = self.nok(self.denominator, other.denominator)
         del_number = nok/self.denominator
-        return ((self.numerator * del_number) + (other.numerator * del_number)), nok
+        return Fraction((self.numerator * del_number) + (other.numerator * del_number), nok)
+
+    def __repr__(self):
+        return f"{self.numerator}/{self.denominator}"
+
 
 
 frac1 = Fraction(7, 5)
 frac2 = Fraction(6, 7)
 
-print(frac1 + frac2)
+result = frac1 + frac2
+print(result)
