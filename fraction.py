@@ -18,5 +18,32 @@
 # Все методы класса Fraction нужно протестировать
 # Тесты писать в tests/test_fraction.py
 
+from typing import *
+
+
 class Fraction:
     """Здесь реализовать поля и методы"""
+
+    def __init__(self, numerator: int, denominator: int):
+        self.numerator = numerator
+        self.denominator = denominator
+
+    @staticmethod
+    def nok(value1, value2) -> int:
+        delitel = value1
+        while True:
+            if delitel % value1 == 0 and delitel % value2 == 0:
+                break
+            delitel += 1
+        return delitel
+
+    def __add__(self, other) -> "Fraction":
+        nok = self.nok(self.denominator, other.denominator)
+        del_number = nok/self.denominator
+        return ((self.numerator * del_number) + (other.numerator * del_number)), nok
+
+
+frac1 = Fraction(7, 5)
+frac2 = Fraction(6, 7)
+
+print(frac1 + frac2)
