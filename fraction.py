@@ -39,7 +39,7 @@ class Fraction:
 
     def __add__(self, other) -> "Fraction":
         # nok = self.nok(self.denominator, other.denominator)
-        del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
+        # del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
         del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
         del_number_other = self.nok(self.denominator, other.denominator) / other.denominator
         return Fraction((self.numerator * del_number_self) + (other.numerator * del_number_other),\
@@ -48,7 +48,11 @@ class Fraction:
     def __repr__(self):
         return f"{self.numerator}/{self.denominator}"
 
-    # def __sub__(self, other) -> "Fraction":
+    def __sub__(self, other) -> "Fraction":
+        del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
+        del_number_other = self.nok(self.denominator, other.denominator) / other.denominator
+        return Fraction((self.numerator * del_number_self) - (other.numerator * del_number_other),\
+                        self.nok(self.denominator, other.denominator))
 
 
 frac1 = Fraction(1, 2)
