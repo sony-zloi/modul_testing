@@ -35,20 +35,24 @@ class Fraction:
             if delitel % value1 == 0 and delitel % value2 == 0:
                 break
             delitel += 1
-        return delitel
+        return delitel/value1
 
     def __add__(self, other) -> "Fraction":
-        nok = self.nok(self.denominator, other.denominator)
-        del_number = nok/self.denominator
-        return Fraction((self.numerator * del_number) + (other.numerator * del_number), nok)
+        # nok = self.nok(self.denominator, other.denominator)
+        del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
+        del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
+        del_number_other = self.nok(self.denominator, other.denominator) / other.denominator
+        return Fraction((self.numerator * del_number_self) + (other.numerator * del_number_other),\
+                        self.nok(self.denominator, other.denominator))
 
     def __repr__(self):
         return f"{self.numerator}/{self.denominator}"
 
+    # def __sub__(self, other) -> "Fraction":
 
 
-frac1 = Fraction(7, 5)
-frac2 = Fraction(6, 7)
+frac1 = Fraction(1, 2)
+frac2 = Fraction(1, 3)
 
 result = frac1 + frac2
 print(result)
