@@ -8,7 +8,7 @@
 # Обратить внимание на следующие моменты
 #  - Объект дроби иммутабельный (неизменяемый), при результатом матиематических операций/преобразований является новый объект
 #  - Дробь может иметь целую часть (3/2 -> 1 1/2)
-#  - Дробь может быть неупрощенной (12/3 -> 3)
+#  - Дробь может быть неупрощенной (12/3 -> 4/1)
 #     * - релизовать метод упрощения, который вернет упрощеную дробь
 #  - Дроби можно сравнивать, неупрощенные дроби должны быть равны упрощенной (12/3 = 4/1)
 #  - Дробь можно преобразовать в число с плавающей точкой (передать в конструтор float) или получить целую часть от дроби
@@ -24,12 +24,15 @@ from typing import *
 class Fraction:
     """Здесь реализовать поля и методы"""
 
-    def __init__(self, numerator: int, denominator: int):
-        self.numerator = numerator
-        self.denominator = denominator
+    def __init__(self, num: int, den: int):
+        self.num = num
+        if den:
+            self.den = den
+        else:
+            raise ZeroDivisionError
 
     @staticmethod
-    def getNok(value1, value2) -> int:
+    def getNok(value1: int, value2: int) -> int:
         """Получение наименьшего общего кратного"""
         if value1 > value2:
             delitel = value1
@@ -43,27 +46,35 @@ class Fraction:
         return delitel
 
     def __add__(self, other) -> "Fraction":
-        # nok = self.nok(self.denominator, other.denominator)
-        # del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
-        del_number_self = self.getNok(self.denominator, other.denominator) / self.denominator
-        del_number_other = self.getNok(self.denominator, other.denominator) / other.denominator
-        return Fraction(int((self.numerator * del_number_self) + (other.numerator * del_number_other)),\
-                        self.getNok(self.denominator, other.denominator))
+        # nok = self.nok(self.den, other.den)
+        # del_number_self = self.nok(self.den, other.den) / self.den
+        del_number_self = self.getNok(self.den, other.den) / self.den
+        del_number_other = self.getNok(self.den, other.den) / other.den
+        return Fraction(int((self.num * del_number_self) + (other.num * del_number_other)),\
+                        self.getNok(self.den, other.den))
 
     def __repr__(self):
-        return f"{self.numerator}/{self.denominator}"
+        return f"{self.num}/{self.den}"
 
     def __sub__(self, other) -> "Fraction":
-        del_number_self = self.getNok(self.denominator, other.denominator) / self.denominator
-        del_number_other = self.getNok(self.denominator, other.denominator) / other.denominator
-        return Fraction(int((self.numerator * del_number_self) - (other.numerator * del_number_other)),\
-                        self.getNok(self.denominator, other.denominator))
+        del_number_self = self.getNok(self.den, other.den) / self.den
+        del_number_other = self.getNok(self.den, other.den) / other.den
+        return Fraction(int((self.num * del_number_self) - (other.num * del_number_other)),\
+                        self.getNok(self.den, other.den))
 
-    def __mul__(self, other):
-        return Fraction((self.numerator * other.numerator),(self.denominator * other.denominator))
+    def __mul__(self, other) -> "Fraction":
+        return Fraction((self.num * other.num), (self.den * other.den))
 
-frac1 = Fraction(2, 3)
-frac2 = Fraction(3, 1)
+    def __truediv__(self, other) -> "Fraction":
+        return Fraction((self.num * other.den), (self.den * other.num))
 
-result = frac1 * frac2
+    def __pow__(self, power, modulo=None):
+        return Fraction((self.num ** power), (self.den ** power))
+
+frac1 = Fraction(1, 2)
+frac2 = Fraction(1, 3)
+
+result = frac1 / frac2
 print(result)
+pow1 = frac2 ** 2
+print(pow1)
