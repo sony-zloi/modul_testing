@@ -29,34 +29,41 @@ class Fraction:
         self.denominator = denominator
 
     @staticmethod
-    def nok(value1, value2) -> int:
-        delitel = value1
+    def getNok(value1, value2) -> int:
+        """Получение наименьшего общего кратного"""
+        if value1 > value2:
+            delitel = value1
+        else:
+            delitel = value2
+
         while True:
             if delitel % value1 == 0 and delitel % value2 == 0:
                 break
             delitel += 1
-        return delitel/value1
+        return delitel
 
     def __add__(self, other) -> "Fraction":
         # nok = self.nok(self.denominator, other.denominator)
         # del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
-        del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
-        del_number_other = self.nok(self.denominator, other.denominator) / other.denominator
-        return Fraction((self.numerator * del_number_self) + (other.numerator * del_number_other),\
-                        self.nok(self.denominator, other.denominator))
+        del_number_self = self.getNok(self.denominator, other.denominator) / self.denominator
+        del_number_other = self.getNok(self.denominator, other.denominator) / other.denominator
+        return Fraction(int((self.numerator * del_number_self) + (other.numerator * del_number_other)),\
+                        self.getNok(self.denominator, other.denominator))
 
     def __repr__(self):
         return f"{self.numerator}/{self.denominator}"
 
     def __sub__(self, other) -> "Fraction":
-        del_number_self = self.nok(self.denominator, other.denominator) / self.denominator
-        del_number_other = self.nok(self.denominator, other.denominator) / other.denominator
-        return Fraction((self.numerator * del_number_self) - (other.numerator * del_number_other),\
-                        self.nok(self.denominator, other.denominator))
+        del_number_self = self.getNok(self.denominator, other.denominator) / self.denominator
+        del_number_other = self.getNok(self.denominator, other.denominator) / other.denominator
+        return Fraction(int((self.numerator * del_number_self) - (other.numerator * del_number_other)),\
+                        self.getNok(self.denominator, other.denominator))
 
+    def __mul__(self, other):
+        return Fraction((self.numerator * other.numerator),(self.denominator * other.denominator))
 
-frac1 = Fraction(1, 2)
-frac2 = Fraction(1, 3)
+frac1 = Fraction(2, 3)
+frac2 = Fraction(3, 1)
 
-result = frac1 + frac2
+result = frac1 * frac2
 print(result)
